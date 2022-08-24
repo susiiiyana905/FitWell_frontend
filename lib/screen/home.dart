@@ -1,13 +1,12 @@
-import 'package:fitwell_frontend/api/http/home_http.dart';
-import 'package:fitwell_frontend/api/http/progress_http.dart';
-import 'package:fitwell_frontend/api/http/user_http.dart';
-import 'package:fitwell_frontend/api/res/expense_res.dart';
-import 'package:fitwell_frontend/api/res/home_res.dart';
-import 'package:fitwell_frontend/resource/category.dart';
-import 'package:fitwell_frontend/screen/expense/categorized_expense.dart';
-import 'package:fitwell_frontend/screen/income/categorized_income.dart';
-import 'package:fitwell_frontend/screen/progress/result.dart';
-import 'package:fitwell_frontend/screen/setting/change_password.dart';
+import 'package:fit_well/api/http/home_http.dart';
+import 'package:fit_well/api/http/progress_http.dart';
+import 'package:fit_well/api/http/user_http.dart';
+import 'package:fit_well/api/res/expense_res.dart';
+import 'package:fit_well/api/res/home_res.dart';
+import 'package:fit_well/resource/category.dart';
+import 'package:fit_well/screen/expense/categorized_expense.dart';
+import 'package:fit_well/screen/income/categorized_income.dart';
+import 'package:fit_well/screen/setting/change_password.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,7 +25,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int curTime = DateTime.now().hour;
-  String greeting = "Expense Tracker";
+  String greeting = "Fit Well";
 
   late Future<HomeData> userHomeData;
   bool moreExpense = false;
@@ -93,14 +92,6 @@ class _HomeState extends State<Home> {
             .toList();
       }
     });
-
-    final pc = await ProgressHttp().calculateProgress();
-    if (pc["achievementUnlocked"]) {
-      showDialog(
-        context: context,
-        builder: (builder) => congratulation(context),
-      );
-    }
   }
 
   @override
@@ -277,64 +268,6 @@ class _HomeState extends State<Home> {
         ),
       ),
       bottomNavigationBar: PageNavigator(pageIndex: 0),
-    );
-  }
-
-  Widget congratulation(BuildContext context) {
-    return SimpleDialog(
-      backgroundColor: AppColors.background,
-      titlePadding: EdgeInsets.zero,
-      contentPadding: EdgeInsets.all(10),
-      children: [
-        Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image(
-                fit: BoxFit.fitWidth,
-                image: AssetImage(
-                  "image/Congratulation.png",
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "New Achievement Unlocked.",
-              style: TextStyle(
-                color: AppColors.iconHeading,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: AppColors.primary,
-                minimumSize: Size.zero,
-                padding: EdgeInsets.all(8),
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (builder) => Result(),
-                  ),
-                );
-              },
-              child: Text("Check Out"),
-            ),
-          ],
-        ),
-      ],
     );
   }
 

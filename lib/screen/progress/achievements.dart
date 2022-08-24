@@ -1,6 +1,6 @@
-import 'package:fitwell_frontend/api/http/achievement_http.dart';
-import 'package:fitwell_frontend/api/res/progress_res.dart';
-import 'package:fitwell_frontend/widget/navigator.dart';
+import 'package:fit_well/api/http/achievement_http.dart';
+import 'package:fit_well/api/res/progress_res.dart';
+import 'package:fit_well/widget/navigator.dart';
 import 'package:flutter/material.dart';
 
 import '../../resource/colors.dart';

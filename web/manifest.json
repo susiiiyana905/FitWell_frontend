@@ -1,6 +1,6 @@
 {
-    "name": "fitwell_frontend",
-    "short_name": "fitwell_frontend",
+    "name": "fit_well",
+    "short_name": "fit_well",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

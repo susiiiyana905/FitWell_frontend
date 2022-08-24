@@ -1,4 +1,4 @@
-import 'package:fitwell_frontend/screen/authentication/sign_up.dart';
+import 'package:fit_well/screen/authentication/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

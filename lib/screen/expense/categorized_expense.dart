@@ -1,9 +1,9 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:fitwell_frontend/widget/navigator.dart';
+import 'package:fit_well/widget/navigator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:fitwell_frontend/api/http/expense_http.dart';
+import 'package:fit_well/api/http/expense_http.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/res/expense_res.dart';

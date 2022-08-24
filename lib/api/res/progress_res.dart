@@ -1,4 +1,4 @@
-import 'package:fitwell_frontend/api/res/user_res.dart';
+import 'package:fit_well/api/res/user_res.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'progress_res.g.dart';

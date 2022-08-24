@@ -1,9 +1,9 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:fitwell_frontend/screen/progress/result.dart';
+import 'package:fit_well/screen/progress/profile.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:fitwell_frontend/resource/category.dart';
+import 'package:fit_well/resource/category.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -490,7 +490,7 @@ class _IncomeState extends State<Income> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (builder) => Result(),
+                    builder: (builder) => Profile(),
                   ),
                 );
               },

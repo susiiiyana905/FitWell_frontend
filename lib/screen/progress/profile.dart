@@ -1,6 +1,6 @@
-import 'package:fitwell_frontend/api/http/progress_http.dart';
-import 'package:fitwell_frontend/screen/progress/achievements.dart';
-import 'package:fitwell_frontend/screen/progress/rank.dart';
+import 'package:fit_well/api/http/progress_http.dart';
+import 'package:fit_well/screen/progress/achievements.dart';
+import 'package:fit_well/screen/progress/rank.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -8,14 +8,14 @@ import '../../api/res/progress_res.dart';
 import '../../resource/colors.dart';
 import '../../widget/navigator.dart';
 
-class Result extends StatefulWidget {
-  const Result({Key? key}) : super(key: key);
+class Profile extends StatefulWidget {
+  const Profile({Key? key}) : super(key: key);
 
   @override
-  State<Result> createState() => _ResultState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class _ResultState extends State<Result> {
+class _ProfileState extends State<Profile> {
   late Future<ProgressData> userProgress;
 
   void loadProgress() {
@@ -196,7 +196,7 @@ class _ResultState extends State<Result> {
           ),
         ),
       ),
-      bottomNavigationBar: PageNavigator(pageIndex: 3),
+      bottomNavigationBar: PageNavigator(pageIndex: 2),
     );
   }
 
@@ -216,71 +216,6 @@ class _ResultState extends State<Result> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: sWidth * .28,
-                  height: sWidth * .28,
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(sWidth * .14),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  alignment: Alignment.center,
-                  width: sWidth * .25,
-                  height: sWidth * .25,
-                  decoration: BoxDecoration(
-                    color: AppColors.onPrimary,
-                    borderRadius: BorderRadius.circular(sWidth * .125),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                      )
-                    ],
-                  ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: pmp,
-                      style: TextStyle(
-                        color: AppColors.iconHeading,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            RichText(
-              text: TextSpan(
-                text: "Last Month",
-                style: TextStyle(
-                  color: AppColors.iconHeading,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
         Column(
           children: [
             Stack(
@@ -336,7 +271,7 @@ class _ResultState extends State<Result> {
             ),
             RichText(
               text: TextSpan(
-                text: "Total",
+                text: "Today",
                 style: TextStyle(
                   color: AppColors.iconHeading,
                   fontSize: 16,
@@ -352,11 +287,11 @@ class _ResultState extends State<Result> {
               alignment: Alignment.center,
               children: [
                 Container(
-                  width: sWidth * .28,
-                  height: sWidth * .28,
+                  width: sWidth * .32,
+                  height: sWidth * .32,
                   decoration: BoxDecoration(
                     color: Colors.green,
-                    borderRadius: BorderRadius.circular(sWidth * .14),
+                    borderRadius: BorderRadius.circular(sWidth * .16),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
@@ -369,11 +304,11 @@ class _ResultState extends State<Result> {
                 Container(
                   padding: EdgeInsets.all(10),
                   alignment: Alignment.center,
-                  width: sWidth * .25,
-                  height: sWidth * .25,
+                  width: sWidth * .29,
+                  height: sWidth * .29,
                   decoration: BoxDecoration(
                     color: AppColors.onPrimary,
-                    borderRadius: BorderRadius.circular(sWidth * .125),
+                    borderRadius: BorderRadius.circular(sWidth * .145),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
@@ -401,7 +336,7 @@ class _ResultState extends State<Result> {
             ),
             RichText(
               text: TextSpan(
-                text: "This Month",
+                text: "Total",
                 style: TextStyle(
                   color: AppColors.iconHeading,
                   fontSize: 16,

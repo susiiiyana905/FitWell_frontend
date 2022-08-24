@@ -1,7 +1,7 @@
-import 'package:fitwell_frontend/api/http/expense_http.dart';
-import 'package:fitwell_frontend/api/model/expense_income_model.dart';
-import 'package:fitwell_frontend/api/res/expense_res.dart';
-import 'package:fitwell_frontend/resource/category.dart';
+import 'package:fit_well/api/http/expense_http.dart';
+import 'package:fit_well/api/model/expense_income_model.dart';
+import 'package:fit_well/api/res/expense_res.dart';
+import 'package:fit_well/resource/category.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,7 +11,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 import '../../resource/colors.dart';
 import '../../widget/navigator.dart';
-import '../progress/result.dart';
+import '../progress/profile.dart';
 
 class Expense extends StatefulWidget {
   const Expense({Key? key}) : super(key: key);
@@ -487,7 +487,7 @@ class _ExpenseState extends State<Expense> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (builder) => Result(),
+                    builder: (builder) => Profile(),
                   ),
                 );
               },

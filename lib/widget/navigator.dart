@@ -1,7 +1,6 @@
-import 'package:fitwell_frontend/resource/colors.dart';
-import 'package:fitwell_frontend/screen/expense/expense.dart';
-import 'package:fitwell_frontend/screen/income/income.dart';
-import 'package:fitwell_frontend/screen/progress/result.dart';
+import 'package:fit_well/resource/colors.dart';
+import 'package:fit_well/screen/income/income.dart';
+import 'package:fit_well/screen/progress/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../screen/home.dart';
@@ -39,42 +38,29 @@ class PageNavigator extends StatelessWidget {
           ),
           NavigationDestination(
             icon: Icon(
-              FontAwesomeIcons.sackDollar,
+              FontAwesomeIcons.personRunning,
               color: AppColors.iconHeading,
               size: 25,
             ),
             selectedIcon: Icon(
-              FontAwesomeIcons.sackDollar,
-              color: AppColors.primary,
-              size: 25,
-            ),
-            label: "Income",
-          ),
-          NavigationDestination(
-            icon: Icon(
-              FontAwesomeIcons.circleDollarToSlot,
-              color: AppColors.iconHeading,
-              size: 25,
-            ),
-            selectedIcon: Icon(
-              FontAwesomeIcons.circleDollarToSlot,
-              color: AppColors.primary,
-              size: 25,
-            ),
-            label: "Expense",
-          ),
-          NavigationDestination(
-            icon: Icon(
-              FontAwesomeIcons.chartLine,
-              color: AppColors.iconHeading,
-              size: 25,
-            ),
-            selectedIcon: Icon(
-              FontAwesomeIcons.chartLine,
+              FontAwesomeIcons.personRunning,
               color: AppColors.primary,
               size: 25,
             ),
             label: "Progress",
+          ),
+          NavigationDestination(
+            icon: Icon(
+              Icons.person,
+              color: AppColors.iconHeading,
+              size: 25,
+            ),
+            selectedIcon: Icon(
+              Icons.person,
+              color: AppColors.primary,
+              size: 25,
+            ),
+            label: "Profile",
           ),
         ],
         height: 55,
@@ -96,18 +82,11 @@ class PageNavigator extends StatelessWidget {
                 builder: (builder) => Income(),
               ),
             );
-          } else if (index == 2) {
+          }  else if (index == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (builder) => Expense(),
-              ),
-            );
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (builder) => Result(),
+                builder: (builder) => Profile(),
               ),
             );
           }

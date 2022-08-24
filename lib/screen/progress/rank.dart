@@ -1,6 +1,6 @@
-import 'package:fitwell_frontend/api/http/progress_http.dart';
-import 'package:fitwell_frontend/api/res/progress_res.dart';
-import 'package:fitwell_frontend/widget/navigator.dart';
+import 'package:fit_well/api/http/progress_http.dart';
+import 'package:fit_well/api/res/progress_res.dart';
+import 'package:fit_well/widget/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -161,7 +161,7 @@ class _RankingSystemState extends State<RankingSystem> {
         ),
       ),
       bottomNavigationBar: PageNavigator(
-        pageIndex: 3,
+        pageIndex: 2,
       ),
     );
   }

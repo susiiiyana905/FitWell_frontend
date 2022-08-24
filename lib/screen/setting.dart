@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:fitwell_frontend/api/google/google_sign_up.dart';
-import 'package:fitwell_frontend/screen/help.dart';
+import 'package:fit_well/screen/help.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -97,53 +96,6 @@ class _SettingState extends State<Setting> {
               if (snapshot.hasData) {
                 children = <Widget>[
                   SizedBox(
-                    height: 5,
-                  ),
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      CircleAvatar(
-                        radius: 100,
-                        backgroundImage:
-                            NetworkImage(snapshot.data!.profilePicture!),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (builder) => pickPlatform(context),
-                          );
-                        },
-                        child: Icon(
-                          Icons.edit,
-                          color: AppColors.onPrimary,
-                          size: 30,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(10),
-                          minimumSize: Size.zero,
-                          primary: AppColors.primary,
-                          elevation: 10,
-                          shadowColor: AppColors.iconHeading,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    snapshot.data!.profileName!,
-                    style: TextStyle(
-                      color: AppColors.iconHeading,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  SizedBox(
                     height: 15,
                   ),
                   ListTile(
@@ -233,14 +185,14 @@ class _SettingState extends State<Setting> {
                       size: 18,
                     ),
                     title: Text(
-                      "Progress Publication",
+                      "Share points",
                       style: TextStyle(
                         color: AppColors.iconHeading,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     subtitle: Text(
-                      "Share your progress points and achievements",
+                      "Share your progress points",
                       style: TextStyle(
                         color: AppColors.text,
                       ),
@@ -274,44 +226,7 @@ class _SettingState extends State<Setting> {
                     horizontalTitleGap: 0,
                     minVerticalPadding: 0,
                     visualDensity: VisualDensity(horizontal: -4, vertical: -2),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Help(),
-                        ),
-                      );
-                    },
-                    leading: Icon(
-                      Icons.help_rounded,
-                      color: AppColors.primary,
-                      size: 22,
-                    ),
-                    title: Text(
-                      "Help",
-                      style: TextStyle(
-                        color: AppColors.iconHeading,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      "Learn about the app",
-                      style: TextStyle(
-                        color: AppColors.text,
-                      ),
-                    ),
-                  ),
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    horizontalTitleGap: 0,
-                    minVerticalPadding: 0,
-                    visualDensity: VisualDensity(horizontal: -4, vertical: -2),
                     onTap: () async {
-                      bool googleSignIn = await LogStatus().googleSignIn();
-                      if (googleSignIn) {
-                        await GoogleSingInApi.logout();
-                        LogStatus().removeGoogleSignIn();
-                      }
-
                       LogStatus().removeToken();
                       LogStatus.token = "";
 
@@ -395,148 +310,6 @@ class _SettingState extends State<Setting> {
           },
         ),
       ),
-    );
-  }
-
-  Widget pickPlatform(BuildContext context) {
-    return SimpleDialog(
-      backgroundColor: AppColors.background,
-      titlePadding: EdgeInsets.zero,
-      contentPadding: EdgeInsets.all(10),
-      children: [
-        Column(
-          children: [
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                final image =
-                    await ImagePicker().pickImage(source: ImageSource.camera);
-
-                if (image == null) return;
-
-                final resData =
-                    await UserHttp().changeProfilePicture(File(image.path));
-                if (resData["statusCode"] == 200) {
-                  setState(() {
-                    getUser = UserHttp().getUser();
-                  });
-
-                  Fluttertoast.showToast(
-                    msg: resData["body"]["resM"],
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 3,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                  );
-                } else {
-                  Fluttertoast.showToast(
-                    msg: resData["body"]["resM"],
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 3,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                  );
-                }
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.camera,
-                    size: 25,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    "Camera",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  )
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                primary: AppColors.primary,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                final image =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
-                if (image == null) return;
-
-                final resData =
-                    await UserHttp().changeProfilePicture(File(image.path));
-                if (resData["statusCode"] == 200) {
-                  setState(() {
-                    getUser = UserHttp().getUser();
-                  });
-
-                  Fluttertoast.showToast(
-                    msg: resData["body"]["resM"],
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 3,
-                    backgroundColor: Colors.green,
-                    textColor: Colors.white,
-                  );
-                } else {
-                  Fluttertoast.showToast(
-                    msg: resData["body"]["resM"],
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 3,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                  );
-                }
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.photo_album,
-                    size: 25,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    "Gallery",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  )
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                primary: AppColors.primary,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

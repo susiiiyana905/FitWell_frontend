@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fitwell_frontend/api/res/home_res.dart';
+import 'package:fit_well/api/res/home_res.dart';
 import 'package:http/http.dart';
 
 import '../log_status.dart';

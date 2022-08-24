@@ -17,7 +17,7 @@ void main() {
             details.exception.toString(),
             textAlign: TextAlign.center,
             softWrap: true,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -33,26 +33,26 @@ void main() {
       if (value.isNotEmpty) {
         LogStatus.token = value;
 
-        runApp(const ExpenseTracker(initialPage: Home()));
+        runApp(const FitWell(initialPage: Home()));
       } else {
-        runApp(const ExpenseTracker(initialPage: Login()));
+        runApp(const FitWell(initialPage: Login()));
       }
     },
   );
 }
 
-class ExpenseTracker extends StatefulWidget {
+class FitWell extends StatefulWidget {
   final Widget? initialPage;
-  const ExpenseTracker({
+  const FitWell({
     Key? key,
     @required this.initialPage,
   }) : super(key: key);
 
   @override
-  State<ExpenseTracker> createState() => _ExpenseTrackerState();
+  State<FitWell> createState() => _FitWellState();
 }
 
-class _ExpenseTrackerState extends State<ExpenseTracker> {
+class _FitWellState extends State<FitWell> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,7 +60,7 @@ class _ExpenseTrackerState extends State<ExpenseTracker> {
         scaffoldBackgroundColor: AppColors.background,
       ),
       debugShowCheckedModeBanner: false,
-      title: 'Expense Income Tracker',
+      title: 'FitWell',
       home: widget.initialPage,
     );
   }

@@ -33,7 +33,7 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Welcome to Expense Tracker',
+          'Welcome to Fit Well Community',
           style: TextStyle(
             color: AppColors.iconHeading,
             fontSize: 18,

@@ -1,4 +1,4 @@
-import 'package:fitwell_frontend/screen/home.dart';
+import 'package:fit_well/screen/home.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

@@ -1,7 +1,10 @@
-import 'package:fitwell_frontend/api/log_status.dart';
+import 'dart:io';
+
+import 'package:fit_well/api/log_status.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../api/http/user_http.dart';
 import '../../api/res/user_res.dart';
@@ -19,8 +22,6 @@ class _UserSettingState extends State<UserSetting> {
       emailController = TextEditingController();
   String profileName = "", email = "";
   String? gender;
-
-  bool editEmail = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -54,11 +55,6 @@ class _UserSettingState extends State<UserSetting> {
       email = value.email!;
       gender = value.gender!;
     });
-
-    bool googleSignIn = await LogStatus().googleSignIn();
-    if (googleSignIn) {
-      editEmail = false;
-    }
   }
 
   @override
@@ -123,6 +119,42 @@ class _UserSettingState extends State<UserSetting> {
               } else if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
                   children = <Widget>[
+                    Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        CircleAvatar(
+                          radius: 100,
+                          backgroundImage:
+                              NetworkImage(snapshot.data!.profilePicture!),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (builder) => pickPlatform(context),
+                            );
+                          },
+                          child: Icon(
+                            Icons.edit,
+                            color: AppColors.onPrimary,
+                            size: 30,
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(10),
+                            minimumSize: Size.zero,
+                            primary: AppColors.primary,
+                            elevation: 10,
+                            shadowColor: AppColors.iconHeading,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Form(
                       key: _formKey,
                       child: Column(
@@ -181,57 +213,53 @@ class _UserSettingState extends State<UserSetting> {
                               ],
                             ),
                           ),
-                          editEmail
-                              ? ListTile(
-                                  contentPadding: EdgeInsets.only(
-                                      left: 0, right: 0, bottom: 10),
-                                  minLeadingWidth: 0,
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Email:",
-                                        style: TextStyle(
-                                          color: AppColors.iconHeading,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 5,
-                                      ),
-                                      TextFormField(
-                                        controller: emailController,
-                                        onSaved: (value) {
-                                          email = value!.trim();
-                                        },
-                                        validator: MultiValidator([
-                                          RequiredValidator(
-                                              errorText:
-                                                  "New email is required"),
-                                        ]),
-                                        style: TextStyle(
-                                          color: AppColors.iconHeading,
-                                        ),
-                                        decoration: InputDecoration(
-                                          isDense: true,
-                                          filled: true,
-                                          fillColor: AppColors.button,
-                                          hintText: "Enter new Email",
-                                          hintStyle: TextStyle(
-                                            color: AppColors.text,
-                                          ),
-                                          enabledBorder: formBorder,
-                                          focusedBorder: formBorder,
-                                          errorBorder: formBorder,
-                                          focusedErrorBorder: formBorder,
-                                        ),
-                                      )
-                                    ],
+                          ListTile(
+                            contentPadding:
+                                EdgeInsets.only(left: 0, right: 0, bottom: 10),
+                            minLeadingWidth: 0,
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Email:",
+                                  style: TextStyle(
+                                    color: AppColors.iconHeading,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                TextFormField(
+                                  controller: emailController,
+                                  onSaved: (value) {
+                                    email = value!.trim();
+                                  },
+                                  validator: MultiValidator([
+                                    RequiredValidator(
+                                        errorText: "New email is required"),
+                                  ]),
+                                  style: TextStyle(
+                                    color: AppColors.iconHeading,
+                                  ),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    filled: true,
+                                    fillColor: AppColors.button,
+                                    hintText: "Enter new Email",
+                                    hintStyle: TextStyle(
+                                      color: AppColors.text,
+                                    ),
+                                    enabledBorder: formBorder,
+                                    focusedBorder: formBorder,
+                                    errorBorder: formBorder,
+                                    focusedErrorBorder: formBorder,
                                   ),
                                 )
-                              : SizedBox(),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -415,6 +443,148 @@ class _UserSettingState extends State<UserSetting> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget pickPlatform(BuildContext context) {
+    return SimpleDialog(
+      backgroundColor: AppColors.background,
+      titlePadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.all(10),
+      children: [
+        Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                final image =
+                    await ImagePicker().pickImage(source: ImageSource.camera);
+
+                if (image == null) return;
+
+                final resData =
+                    await UserHttp().changeProfilePicture(File(image.path));
+                if (resData["statusCode"] == 200) {
+                  setState(() {
+                    getUser = UserHttp().getUser();
+                  });
+
+                  Fluttertoast.showToast(
+                    msg: resData["body"]["resM"],
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                    msg: resData["body"]["resM"],
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                  );
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(
+                    Icons.camera,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Camera",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  )
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                primary: AppColors.primary,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                final image =
+                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (image == null) return;
+
+                final resData =
+                    await UserHttp().changeProfilePicture(File(image.path));
+                if (resData["statusCode"] == 200) {
+                  setState(() {
+                    getUser = UserHttp().getUser();
+                  });
+
+                  Fluttertoast.showToast(
+                    msg: resData["body"]["resM"],
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                    msg: resData["body"]["resM"],
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 3,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                  );
+                }
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(
+                    Icons.photo_album,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Gallery",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  )
+                ],
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                primary: AppColors.primary,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

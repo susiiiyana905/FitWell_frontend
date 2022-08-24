@@ -1,4 +1,4 @@
-package com.example.fitwell_frontend
+package com.example.fit_well
 
 import io.flutter.embedding.android.FlutterActivity
 

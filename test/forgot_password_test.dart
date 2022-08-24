@@ -1,4 +1,4 @@
-import 'package:fitwell_frontend/screen/authentication/forget_password.dart';
+import 'package:fit_well/screen/authentication/forget_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

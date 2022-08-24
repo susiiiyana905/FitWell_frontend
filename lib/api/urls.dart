@@ -1,11 +1,10 @@
 class ApiUrls {
-  static const routeUrl = "https://expense-income007.herokuapp.com/";
+  static const routeUrl = "http://10.1.1.82:8001/";
 }
 
 class Authentication {
   static const register = "user/register";
   static const login = "user/login";
-  static const googleSignIn = "user/googleSignIn";
 }
 
 class AchievementUrls {

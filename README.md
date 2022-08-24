@@ -1,16 +1,22 @@
-# fitwell_frontend
+# Expense Tracker
+A mobile app for tracking personal expenses and incomes.
 
-A new Flutter project.
+# Technologies
+1. Flutter
+2. Node.js
 
-## Getting Started
+# Features
+1. Add expenses and incomes
+2. Visualize expenses and incomes data from high amount to low amount 
+3. Visualize expenses and incomes categories in pie chart 
+4. Select dates to get the expenses and incomes between two particular days
+5. Visualize current and last month expenses and incomes in bar chart 
+6. Get feedback about whether the current month expenses looks good or bad
+7. Visualize days expenses of last or current month in line chart
+8. Get progress points and achievements after adding expenses and incomes
+9. Share your progress points and achievements to the public
+10. View progress points and achievements of top users in the raking system
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Future Work
+1. Offline visualization
+2. Dark mode

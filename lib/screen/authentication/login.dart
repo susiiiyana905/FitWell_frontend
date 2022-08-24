@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../api/google/google_sign_up.dart';
 import '../../api/http/authentication/login_http.dart';
 import '../../api/log_status.dart';
-import '../../api/model/user_model.dart';
 import '../../resource/colors.dart';
 import '../home.dart';
 import 'forget_password.dart';
@@ -44,7 +42,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Expense Tracker",
+          "Fit Well",
           style: TextStyle(
             color: AppColors.iconHeading,
             fontSize: 18,
@@ -241,12 +239,7 @@ class _LoginState extends State<Login> {
                       );
 
                       final resData = await LoginHttp().login(email, password);
-                      if (resData["statusCode"] == 202) {
-                        bool googleSignIn = await LogStatus().googleSignIn();
-                        if (googleSignIn) {
-                          await GoogleSingInApi.logout();
-                          LogStatus().removeGoogleSignIn();
-                        }
+                      if (resData["statusCode"] == 202) {                        
 
                         Navigator.pop(context);
                         if (checkboxValue) {
@@ -292,107 +285,6 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(
                 height: 10,
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      final user = await GoogleSingInApi.login();
-
-                      if (user == null) {
-                        await GoogleSingInApi.logout();
-                        Fluttertoast.showToast(
-                          msg: "Sign in failed.",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 3,
-                          backgroundColor: Colors.red,
-                          textColor: AppColors.primary,
-                          fontSize: 16.0,
-                        );
-                        return;
-                      }
-
-                      showDialog(
-                        context: context,
-                        builder: (builder) => Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 6,
-                            color: AppColors.primary,
-                            backgroundColor: AppColors.button,
-                          ),
-                        ),
-                      );
-
-                      String? photoUrl = user.photoUrl;
-                      photoUrl ??=
-                          "https://res.cloudinary.com/gaurishankar/image/upload/v1658148482/ExpenseTracker/p3o8edl8jnwvdhk5xjmx.png";
-
-                      final resData = await LoginHttp().googleSignIn(
-                        UploadGoogleUser(
-                          email: user.email,
-                          profileName: user.displayName,
-                          profilePicture: photoUrl,
-                        ),
-                      );
-
-                      if (resData["statusCode"] == 202) {
-                        Navigator.pop(context);
-                        if (checkboxValue) {
-                          LogStatus().setToken(resData["body"]["token"]);
-                        }
-                        LogStatus().setGoogleSignIn(true);
-                        LogStatus.token = resData["body"]["token"];
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (builder) => Home(),
-                          ),
-                          (route) => false,
-                        );
-                      }
-                    } catch (error) {
-                      return;
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image(
-                        height: 25,
-                        width: 25,
-                        fit: BoxFit.cover,
-                        image: AssetImage("image/Google.png"),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                          text: "Login with google",
-                          style: TextStyle(
-                            color: AppColors.iconHeading,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.onPrimary,
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    elevation: 5,
-                    shadowColor: Colors.black45,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 5,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
