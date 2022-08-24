@@ -1,12 +1,19 @@
 import 'package:fit_well/api/http/progress_http.dart';
-import 'package:fit_well/screen/progress/achievements.dart';
 import 'package:fit_well/screen/progress/rank.dart';
+import 'package:fit_well/screen/setting.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../api/http/user_http.dart';
+import '../../api/log_status.dart';
 import '../../api/res/progress_res.dart';
+import '../../api/res/user_res.dart';
 import '../../resource/colors.dart';
 import '../../widget/navigator.dart';
+import '../authentication/login.dart';
+import '../setting/password_setting.dart';
+import '../setting/user_setting.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -16,7 +23,17 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  late User getUser;
   late Future<ProgressData> userProgress;
+  bool progressPublication = false;
+
+  void userData() async {
+    getUser = await UserHttp().getUser();
+
+    setState(() {
+      progressPublication = getUser.progressPublication!;
+    });
+  }
 
   void loadProgress() {
     userProgress = ProgressHttp().getUserProgress();
@@ -26,6 +43,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     loadProgress();
+    userData();
   }
 
   @override
@@ -77,7 +95,7 @@ class _ProfileState extends State<Profile> {
                               width: 5,
                             ),
                             Text(
-                              "Your Progress",
+                              "Your Profile",
                               style: TextStyle(
                                 color: AppColors.iconHeading,
                                 fontWeight: FontWeight.bold,
@@ -103,27 +121,249 @@ class _ProfileState extends State<Profile> {
                               },
                               icon: Icon(
                                 FontAwesomeIcons.rankingStar,
-                                color: AppColors.iconHeading,
                                 size: 18,
+                                color: AppColors.iconHeading,
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    progressPoints(
-                      context,
-                      snapshot.data!.progress!.progress!,
-                      snapshot.data!.progress!.pmp!,
-                      snapshot.data!.progress!.tmp!,
+                    Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: sWidth * .28,
+                              height: sWidth * .28,
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius:
+                                    BorderRadius.circular(sWidth * .14),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.center,
+                              width: sWidth * .25,
+                              height: sWidth * .25,
+                              decoration: BoxDecoration(
+                                color: AppColors.onPrimary,
+                                borderRadius:
+                                    BorderRadius.circular(sWidth * .125),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    spreadRadius: 1,
+                                    blurRadius: 10,
+                                  )
+                                ],
+                              ),
+                              child: RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  text: snapshot.data!.progress!.progress
+                                      .toString(),
+                                  style: TextStyle(
+                                    color: AppColors.iconHeading,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: "Progress Points",
+                            style: TextStyle(
+                              color: AppColors.iconHeading,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    thisMonthAchievements(
-                      context,
-                      snapshot.data!.progress!.newAchievement!,
+                    SizedBox(
+                      height: 15,
                     ),
-                    previousMonthAchievements(
-                      context,
-                      snapshot.data!.progress!.oldAchievement!,
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      horizontalTitleGap: 0,
+                      minVerticalPadding: 0,
+                      visualDensity:
+                          VisualDensity(horizontal: -4, vertical: -2),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => UserSetting(),
+                          ),
+                        );
+                      },
+                      leading: Icon(
+                        Icons.person,
+                        color: AppColors.primary,
+                      ),
+                      title: Text(
+                        "Profile",
+                        style: TextStyle(
+                          color: AppColors.iconHeading,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "Update your personal information",
+                        style: TextStyle(
+                          color: AppColors.text,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      horizontalTitleGap: 0,
+                      minVerticalPadding: 0,
+                      visualDensity:
+                          VisualDensity(horizontal: -4, vertical: -2),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => PasswordSetting(),
+                          ),
+                        );
+                      },
+                      leading: Icon(
+                        FontAwesomeIcons.lock,
+                        color: AppColors.primary,
+                        size: 18,
+                      ),
+                      title: Text(
+                        "Password",
+                        style: TextStyle(
+                          color: AppColors.iconHeading,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "Change your password",
+                        style: TextStyle(
+                          color: AppColors.text,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      horizontalTitleGap: 0,
+                      minVerticalPadding: 0,
+                      visualDensity:
+                          VisualDensity(horizontal: -4, vertical: -2),
+                      onTap: () async {
+                        final resData = await UserHttp().publicProgress();
+                        Fluttertoast.showToast(
+                          msg: resData["resM"],
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.green,
+                          textColor: AppColors.onPrimary,
+                          fontSize: 16.0,
+                        );
+                        setState(() {
+                          progressPublication = !progressPublication;
+                        });
+                      },
+                      leading: Icon(
+                        FontAwesomeIcons.earthAsia,
+                        color: AppColors.primary,
+                        size: 18,
+                      ),
+                      title: Text(
+                        "Share points",
+                        style: TextStyle(
+                          color: AppColors.iconHeading,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "Share your progress points",
+                        style: TextStyle(
+                          color: AppColors.text,
+                        ),
+                      ),
+                      trailing: SizedBox(
+                        width: 25,
+                        child: Switch(
+                          activeColor: AppColors.primary,
+                          inactiveThumbColor: AppColors.iconHeading,
+                          value: progressPublication,
+                          onChanged: (value) async {
+                            final resData = await UserHttp().publicProgress();
+                            Fluttertoast.showToast(
+                              msg: resData["resM"],
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.TOP,
+                              timeInSecForIosWeb: 2,
+                              backgroundColor: Colors.green,
+                              textColor: AppColors.onPrimary,
+                              fontSize: 16.0,
+                            );
+                            setState(() {
+                              progressPublication = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      horizontalTitleGap: 0,
+                      minVerticalPadding: 0,
+                      visualDensity:
+                          VisualDensity(horizontal: -4, vertical: -2),
+                      onTap: () async {
+                        LogStatus().removeToken();
+                        LogStatus.token = "";
+
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (builder) => Login(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      leading: Icon(
+                        Icons.logout_outlined,
+                        color: AppColors.primary,
+                        size: 22,
+                      ),
+                      title: Text(
+                        "Log out",
+                        style: TextStyle(
+                          color: AppColors.iconHeading,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        "Logged in as " + getUser.profileName!,
+                        softWrap: true,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: AppColors.text,
+                        ),
+                      ),
                     ),
                   ];
                 } else if (snapshot.hasError) {
@@ -178,319 +418,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
-      floatingActionButton: SizedBox(
-        height: 50,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (builder) => AllAchievements(),
-              ),
-            );
-          },
-          backgroundColor: AppColors.primary,
-          child: Icon(
-            FontAwesomeIcons.medal,
-            size: 20,
-          ),
-        ),
-      ),
       bottomNavigationBar: PageNavigator(pageIndex: 2),
-    );
-  }
-
-  Widget progressPoints(
-      BuildContext context, int progress1, int pmp1, int tmp1) {
-    final sWidth = MediaQuery.of(context).size.width;
-
-    String progress = progress1 > 1000
-        ? (progress1 / 1000).toStringAsFixed(1) + " K"
-        : progress1.toString();
-
-    String pmp =
-        pmp1 > 1000 ? (pmp1 / 1000).toStringAsFixed(1) + " K" : pmp1.toString();
-
-    String tmp =
-        tmp1 > 1000 ? (tmp1 / 1000).toStringAsFixed(1) + " K" : tmp1.toString();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: sWidth * .32,
-                  height: sWidth * .32,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(sWidth * .16),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  alignment: Alignment.center,
-                  width: sWidth * .29,
-                  height: sWidth * .29,
-                  decoration: BoxDecoration(
-                    color: AppColors.onPrimary,
-                    borderRadius: BorderRadius.circular(sWidth * .145),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                      )
-                    ],
-                  ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: progress,
-                      style: TextStyle(
-                        color: AppColors.iconHeading,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            RichText(
-              text: TextSpan(
-                text: "Today",
-                style: TextStyle(
-                  color: AppColors.iconHeading,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-        Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: sWidth * .32,
-                  height: sWidth * .32,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(sWidth * .16),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  alignment: Alignment.center,
-                  width: sWidth * .29,
-                  height: sWidth * .29,
-                  decoration: BoxDecoration(
-                    color: AppColors.onPrimary,
-                    borderRadius: BorderRadius.circular(sWidth * .145),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                      )
-                    ],
-                  ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: tmp,
-                      style: TextStyle(
-                        color: AppColors.iconHeading,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            RichText(
-              text: TextSpan(
-                text: "Total",
-                style: TextStyle(
-                  color: AppColors.iconHeading,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget thisMonthAchievements(
-      BuildContext context, List<Achievement> newAchievements) {
-    final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
-
-    if (newAchievements.isEmpty) {
-      return SizedBox();
-    }
-
-    return Padding(
-      padding: EdgeInsets.only(top: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "This Month Achievements",
-            style: TextStyle(
-              fontSize: 18,
-              color: AppColors.iconHeading,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          GridView.count(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            childAspectRatio: (sWidth - (sWidth * .53)) / (sHeight * .24),
-            crossAxisSpacing: 5,
-            crossAxisCount: 2,
-            children: List.generate(
-              newAchievements.length,
-              (index) {
-                return Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image(
-                        height: sHeight * 0.17,
-                        width: sWidth * 0.4,
-                        fit: BoxFit.fitWidth,
-                        image: AssetImage(
-                          "image/achievement/" +
-                              newAchievements[index].name! +
-                              ".png",
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      newAchievements[index].name!,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: TextStyle(
-                        color: AppColors.iconHeading,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget previousMonthAchievements(
-      BuildContext context, List<Achievement> oldAchievements) {
-    final sHeight = MediaQuery.of(context).size.height;
-    final sWidth = MediaQuery.of(context).size.width;
-
-    if (oldAchievements.isEmpty) {
-      return SizedBox();
-    }
-
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Last Month Achievements",
-            style: TextStyle(
-              fontSize: 18,
-              color: AppColors.iconHeading,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          GridView.count(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            childAspectRatio: (sWidth - (sWidth * .53)) / (sHeight * .24),
-            crossAxisSpacing: 5,
-            crossAxisCount: 2,
-            children: List.generate(
-              oldAchievements.length,
-              (index) {
-                return Column(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image(
-                        height: sHeight * 0.17,
-                        width: sWidth * 0.4,
-                        fit: BoxFit.fitWidth,
-                        image: AssetImage(
-                          "image/achievement/" +
-                              oldAchievements[index].name! +
-                              ".png",
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      oldAchievements[index].name!,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: TextStyle(
-                        color: AppColors.iconHeading,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

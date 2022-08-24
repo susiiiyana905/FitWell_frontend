@@ -1,10 +1,7 @@
-import 'dart:io';
 
-import 'package:fit_well/screen/help.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../api/http/user_http.dart';
 import '../api/log_status.dart';
