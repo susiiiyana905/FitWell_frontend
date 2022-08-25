@@ -1,5 +1,5 @@
 class ApiUrls {
-  static const routeUrl = "http://10.0.2.2:8001/";
+  static const routeUrl = "https://expense-income007.herokuapp.com/";
 }
 
 class Authentication {
@@ -28,7 +28,6 @@ class CompletedUrls {
   static const myExercises = "completed/myExercises";
 }
 
-
 class TokenUrls {
   static const generateToken = "token/generate";
   static const verifyToken = "token/verify";
@@ -37,7 +36,6 @@ class TokenUrls {
 class ProgressUrls {
   static const getUserProgress = "progress/user";
   static const topUsersProgress = "progress/users";
-  static const calculateProgress = "progress/userCalculateProgress";
 }
 
 class UserUrls {

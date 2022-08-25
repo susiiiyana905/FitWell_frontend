@@ -44,19 +44,4 @@ class ProgressHttp {
       return Future.error(error);
     }
   }
-
-  Future<Map> calculateProgress() async {
-    try {
-      final response = await get(
-        Uri.parse(routeUrl + ProgressUrls.calculateProgress),
-        headers: {
-          HttpHeaders.authorizationHeader: "Bearer $token",
-        },
-      );
-
-      return jsonDecode(response.body);
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
 }
