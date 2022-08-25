@@ -37,27 +37,26 @@ Map<String, dynamic> _$ExerciseToJson(Exercise instance) => <String, dynamic>{
       'exerciseType': instance.exerciseType?.toJson(),
     };
 
-Step _$StepFromJson(Map<String, dynamic> json) => Step(
+ExerciseStep _$ExerciseStepFromJson(Map<String, dynamic> json) => ExerciseStep(
       id: json['_id'] as String?,
       step: (json['step'] as List<dynamic>?)?.map((e) => e as String).toList(),
       image: json['image'] as String?,
-      exercise: json['exercise'] == null
+      exerciseName: json['exerciseName'] == null
           ? null
-          : Exercise.fromJson(json['exercise'] as Map<String, dynamic>),
+          : Exercise.fromJson(json['exerciseName'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$StepToJson(Step instance) => <String, dynamic>{
+Map<String, dynamic> _$ExerciseStepToJson(ExerciseStep instance) =>
+    <String, dynamic>{
       '_id': instance.id,
       'step': instance.step,
       'image': instance.image,
-      'exercise': instance.exercise?.toJson(),
+      'exerciseName': instance.exerciseName?.toJson(),
     };
 
 CompletedExercise _$CompletedExerciseFromJson(Map<String, dynamic> json) =>
     CompletedExercise(
       id: json['_id'] as String?,
-      step: (json['step'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      image: json['image'] as String?,
       exercise: json['exercise'] == null
           ? null
           : Exercise.fromJson(json['exercise'] as Map<String, dynamic>),
@@ -66,7 +65,5 @@ CompletedExercise _$CompletedExerciseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CompletedExerciseToJson(CompletedExercise instance) =>
     <String, dynamic>{
       '_id': instance.id,
-      'step': instance.step,
-      'image': instance.image,
       'exercise': instance.exercise?.toJson(),
     };

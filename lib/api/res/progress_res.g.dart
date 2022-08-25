@@ -6,20 +6,6 @@ part of 'progress_res.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Achievement _$AchievementFromJson(Map<String, dynamic> json) => Achievement(
-      name: json['name'] as String?,
-      progressPoint: json['progressPoint'] as int?,
-      description: json['description'] as String?,
-    )..id = json['_id'] as String?;
-
-Map<String, dynamic> _$AchievementToJson(Achievement instance) =>
-    <String, dynamic>{
-      '_id': instance.id,
-      'name': instance.name,
-      'progressPoint': instance.progressPoint,
-      'description': instance.description,
-    };
-
 Progress _$ProgressFromJson(Map<String, dynamic> json) => Progress(
       user: json['user'] == null
           ? null
@@ -27,12 +13,6 @@ Progress _$ProgressFromJson(Map<String, dynamic> json) => Progress(
       progress: json['progress'] as int?,
       tmp: json['tmp'] as int?,
       pmp: json['pmp'] as int?,
-      oldAchievement: (json['oldAchievement'] as List<dynamic>?)
-          ?.map((e) => Achievement.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      newAchievement: (json['newAchievement'] as List<dynamic>?)
-          ?.map((e) => Achievement.fromJson(e as Map<String, dynamic>))
-          .toList(),
     )..id = json['_id'] as String?;
 
 Map<String, dynamic> _$ProgressToJson(Progress instance) => <String, dynamic>{
@@ -41,10 +21,6 @@ Map<String, dynamic> _$ProgressToJson(Progress instance) => <String, dynamic>{
       'progress': instance.progress,
       'tmp': instance.tmp,
       'pmp': instance.pmp,
-      'oldAchievement':
-          instance.oldAchievement?.map((e) => e.toJson()).toList(),
-      'newAchievement':
-          instance.newAchievement?.map((e) => e.toJson()).toList(),
     };
 
 ProgressData _$ProgressDataFromJson(Map<String, dynamic> json) => ProgressData(

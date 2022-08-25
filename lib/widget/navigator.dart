@@ -1,5 +1,5 @@
 import 'package:fit_well/resource/colors.dart';
-import 'package:fit_well/screen/income/income.dart';
+import 'package:fit_well/screen/user_exercise.dart';
 import 'package:fit_well/screen/progress/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -47,7 +47,7 @@ class PageNavigator extends StatelessWidget {
               color: AppColors.primary,
               size: 25,
             ),
-            label: "Progress",
+            label: "Workout",
           ),
           NavigationDestination(
             icon: Icon(
@@ -79,10 +79,10 @@ class PageNavigator extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (builder) => Income(),
+                builder: (builder) => UserExercises(),
               ),
             );
-          }  else if (index == 2) {
+          } else if (index == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(

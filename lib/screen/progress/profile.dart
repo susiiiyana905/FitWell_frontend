@@ -1,6 +1,5 @@
 import 'package:fit_well/api/http/progress_http.dart';
 import 'package:fit_well/screen/progress/rank.dart';
-import 'package:fit_well/screen/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,27 +22,23 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  late User getUser;
   late Future<ProgressData> userProgress;
   bool progressPublication = false;
 
-  void userData() async {
-    getUser = await UserHttp().getUser();
-
-    setState(() {
-      progressPublication = getUser.progressPublication!;
-    });
-  }
-
-  void loadProgress() {
+  void loadProgress() async {
     userProgress = ProgressHttp().getUserProgress();
+
+    await userProgress.then((value) {
+      setState(() {
+        progressPublication = value.progress!.user!.progressPublication!;
+      });
+    });
   }
 
   @override
   void initState() {
     super.initState();
     loadProgress();
-    userData();
   }
 
   @override
@@ -357,7 +352,8 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       subtitle: Text(
-                        "Logged in as " + getUser.profileName!,
+                        "Logged in as " +
+                            snapshot.data!.progress!.user!.profileName!,
                         softWrap: true,
                         textAlign: TextAlign.left,
                         style: TextStyle(

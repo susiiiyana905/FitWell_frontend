@@ -47,25 +47,25 @@ class Exercise {
 }
 
 @JsonSerializable(explicitToJson: true)
-class Step {
+class ExerciseStep {
   @JsonKey(name: "_id")
   String? id;
 
   List<String>? step;
   String? image;
-  Exercise? exercise;
+  Exercise? exerciseName;
 
-  Step({
+  ExerciseStep({
     this.id,
     this.step,
     this.image,
-    this.exercise,
+    this.exerciseName,
   });
 
-  factory Step.fromJson(Map<String, dynamic> json) =>
-      _$StepFromJson(json);
+  factory ExerciseStep.fromJson(Map<String, dynamic> json) =>
+      _$ExerciseStepFromJson(json);
 
-  Map<String, dynamic> toJson() => _$StepToJson(this);
+  Map<String, dynamic> toJson() => _$ExerciseStepToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -73,14 +73,10 @@ class CompletedExercise {
   @JsonKey(name: "_id")
   String? id;
 
-  List<String>? step;
-  String? image;
   Exercise? exercise;
 
   CompletedExercise({
     this.id,
-    this.step,
-    this.image,
     this.exercise,
   });
 

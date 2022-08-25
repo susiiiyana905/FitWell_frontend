@@ -6,7 +6,7 @@ import 'screen/authentication/login.dart';
 import 'screen/home.dart';
 
 void main() {
-  WidgetsFlutterBinding();
+  WidgetsFlutterBinding.ensureInitialized();
 
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Material(

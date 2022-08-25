@@ -1,5 +1,5 @@
 class ApiUrls {
-  static const routeUrl = "http://10.1.1.82:8001/";
+  static const routeUrl = "http://10.0.2.2:8001/";
 }
 
 class Authentication {
@@ -16,7 +16,7 @@ class ExerciseUrls {
 }
 
 class StepUrls {
-  static const getSteps = "step/add";
+  static const getSteps = "step/get";
 }
 
 class HomeUrls {
@@ -24,9 +24,10 @@ class HomeUrls {
 }
 
 class CompletedUrls {
-  static const getUserProgress = "completed/user";
-  static const allProgress = "completed/viewRank";
+  static const completeExercise = "completed/add";
+  static const myExercises = "completed/myExercises";
 }
+
 
 class TokenUrls {
   static const generateToken = "token/generate";
